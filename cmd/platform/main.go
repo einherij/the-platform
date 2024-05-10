@@ -49,4 +49,6 @@ func main() {
 	app.RegisterOnShutdown(func() {
 		grpcServer.GracefulStop()
 	})
+
+	app.Run()
 }
