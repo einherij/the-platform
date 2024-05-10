@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package protocol;
+
+option go_package = "github.com/einherij/the-platform/pkg/transactions/protocol";
+
+service Transactions {
+  rpc Up(BalanceChange) returns (Balance) {};
+  rpc Down(BalanceChange) returns (Balance) {};
+  rpc Transaction(TransactionMessage) returns (Balance) {};
+}
+
+message BalanceChange {
+  string token = 1;
+  int32 amount = 2;
+}
+
+message TransactionMessage {
+  string token = 1;
+  int32 to_user = 2;
+  int32 amount = 3;
+}
+
+message Balance {
+  int32 amount = 1;
+}

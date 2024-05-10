@@ -1,0 +1,28 @@
+version: "3"
+services:
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: default_user
+      POSTGRES_PASSWORD: default_password
+      POSTGRES_DB: platform
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./migrations/:/docker-entrypoint-initdb.d
+
+  envoy:
+    image: envoyproxy/envoy:v1.30-latest
+    volumes:
+      - ./configs/envoy.yaml:/etc/envoy/envoy.yaml
+      - ./protocol/descriptor.pb:/etc/envoy/descriptor.pb
+    ports:
+      - "8080:8080"
+      - "9901:9901"
+    command: ["envoy", "-c", "/etc/envoy/envoy.yaml"]
+
+  nats:
+   image: nats:alpine3.19
+   ports:
+     - "4222:4222"
